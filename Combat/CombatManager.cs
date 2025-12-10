@@ -1,4 +1,6 @@
-﻿using GamePrototype.Units;
+﻿using GamePrototype.Dungeon;
+using GamePrototype.Units;
+using System.Security.Cryptography;
 
 namespace GamePrototype.Combat
 {
@@ -47,22 +49,28 @@ namespace GamePrototype.Combat
                 // player hit
                 case RockPaperScissors.Rock when enemyInput == RockPaperScissors.Scissors:
                     ApplyDamage(player, enemy);
+                    ArmorDamage(player, enemy);
                     break;
                 case RockPaperScissors.Scissors when enemyInput == RockPaperScissors.Paper:
                     ApplyDamage(player, enemy);
+                    ArmorDamage(player, enemy);
                     break;
                 case RockPaperScissors.Paper when enemyInput == RockPaperScissors.Rock:
                     ApplyDamage(player, enemy);
+                    ArmorDamage(player, enemy);
                     break;
                 // enemy hit
                 case RockPaperScissors.Scissors when enemyInput == RockPaperScissors.Rock:
                     ApplyDamage(enemy, player);
+                    ArmorDamage(enemy, player);
                     break;
                 case RockPaperScissors.Paper when enemyInput == RockPaperScissors.Scissors:
                     ApplyDamage(enemy, player);
+                    ArmorDamage(enemy, player);
                     break;
                 case RockPaperScissors.Rock when enemyInput == RockPaperScissors.Paper:
                     ApplyDamage(enemy, player);
+                    ArmorDamage(enemy, player);
                     break;
                 default:
                     Console.WriteLine("Combatants tried to hit, but missed :(");
@@ -73,11 +81,21 @@ namespace GamePrototype.Combat
         private void ApplyDamage(Unit attacker, Unit defender)
         {
             defender.ApplyDamage(attacker.GetUnitDamage());
-            Console.WriteLine($"{attacker.Name} hits {defender.Name}. {defender.Name} health {defender.Health}/{defender.MaxHealth}");
+                        Console.WriteLine($"{attacker.Name} hits {defender.Name}. {defender.Name} health {defender.Health}/{defender.MaxHealth}");
+            Console.WriteLine($"Базовый урон - {attacker.baseDamage}");
+            Console.WriteLine($"Урон с уровнем сложности  - {attacker.GetUnitDamage()}");
             if (defender.Health == 0) 
             {
                 Console.WriteLine($"{defender.Name} is dead!");
             }
         }
+
+        private void ArmorDamage(Unit attacker, Unit defender)
+        {
+            defender.ArmorDamage(attacker.GetUnitDamage());
+            Console.WriteLine($"{attacker.Name} hits {defender.Name}. {defender.Name} Armor {defender.Armour}");
+        }
+
+        
     }
 }

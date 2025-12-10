@@ -2,6 +2,7 @@
 using GamePrototype.Items.EquipItems;
 using GamePrototype.Utils;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace GamePrototype.Units
 {
@@ -9,10 +10,11 @@ namespace GamePrototype.Units
     {
         private readonly Dictionary<EquipSlot, EquipItem> _equipment = new();
 
-        public Player(string name, uint health, uint maxHealth, uint baseDamage) : base(name, health, maxHealth, baseDamage)
+        public Player(string name, uint health, uint maxHealth, uint baseDamage, uint Armor) : base(name, health, maxHealth, baseDamage, Armor)
         {            
         }
 
+       
         public override uint GetUnitDamage()
         {
             if (_equipment.TryGetValue(EquipSlot.Weapon, out var item) && item is Weapon weapon) 
@@ -20,6 +22,15 @@ namespace GamePrototype.Units
                 return BaseDamage + weapon.Damage;
             }
             return BaseDamage;
+        }
+
+        public void UseGrindstone (EquipItem equipItem) 
+        {
+            if (equipItem is EquipItem weapon)
+            {
+                equipItem.Repair(1);
+                Console.WriteLine("Оружие отремонтировано");
+            } 
         }
 
         public override void HandleCombatComplete()
@@ -51,6 +62,7 @@ namespace GamePrototype.Units
             {
                 Health += healthPotion.HealthRestore;
             }
+            
         }
 
         protected override uint CalculateAppliedDamage(uint damage)
@@ -68,6 +80,7 @@ namespace GamePrototype.Units
             builder.AppendLine(Name);
             builder.AppendLine($"Health {Health}/{MaxHealth}");
             builder.AppendLine("Loot:");
+            builder.AppendLine("Armor");
             var items = Inventory.Items;
             for (int i = 0; i < items.Count; i++) 
             {

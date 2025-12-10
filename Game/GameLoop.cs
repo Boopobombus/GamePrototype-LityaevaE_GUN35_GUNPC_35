@@ -1,5 +1,6 @@
 ﻿using GamePrototype.Combat;
 using GamePrototype.Dungeon;
+using GamePrototype.Items.EquipItems;
 using GamePrototype.Units;
 using GamePrototype.Utils;
 
@@ -9,6 +10,7 @@ namespace GamePrototype.Game
     {
         private Unit _player;
         private DungeonRoom _dungeon;
+        private DifficultySettings _difficulty = new DifficultySettings();
         private readonly CombatManager _combatManager = new CombatManager();
         
         public void StartGame() 
@@ -25,8 +27,16 @@ namespace GamePrototype.Game
             Console.WriteLine("Welcome, player!");
             _dungeon = DungeonBuilder.BuildDungeon();
             Console.WriteLine("Enter your name");
+            
             _player = UnitFactoryDemo.CreatePlayer(Console.ReadLine());
             Console.WriteLine($"Hello {_player.Name}");
+            Console.WriteLine("Выберите уровень сложности: 1 - Easy, 2 - Hard");
+            var difficulty = new DifficultySettings();
+            difficulty.SelectDifficulty();
+
+            Console.WriteLine($"Your Armor - {_player.Armour}");                  //для проверки
+            
+             
         }
 
         private void StartGameLoop()
